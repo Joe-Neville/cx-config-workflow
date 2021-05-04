@@ -30,14 +30,8 @@ for device in ip_add:
         hostname = hostname_request.json()["hostname"]
         response = session.get(f"https://{device}/rest/v10.04/fullconfigs/running-config", verify=False)
         config = response.json()
-        try:
-            os.mkdir(path)
-        except OSError:
-            print ("Creation of the directory %s failed" % path)
-        else:
-            print ("Successfully created the directory %s " % path)
-            with open(f'{path}/{hostname}_{dt_string}_config.json', 'w') as outputfile:
-                json.dump(config, outputfile, indent=4)
+        with open(f'{path}/{hostname}_{dt_string}_config.json', 'w') as outputfile:
+            json.dump(config, outputfile, indent=4)
     finally:
         logout = session.post(f"https://{device}/rest/v10.04/logout")
         print(f"This is the logout code: {logout.status_code}")
